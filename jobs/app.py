@@ -1,5 +1,5 @@
 from flask import Flask, render_template, g, request, redirect, url_for
-from datetime import datetime
+import datetime
 import sqlite3
 
 
@@ -64,14 +64,14 @@ def employer(employer_id):
     return render_template('employer.html', employer=employer, jobs=jobs, reviews=reviews)
 
 
-@app.route('/employer/<employer_id>/review', methods=['GET', 'POST'])
+@app.route('/employer/<employer_id>/review', methods=('GET', 'POST'))
 def review(employer_id):
     if request.method == 'POST':
         title = request.form['title']
         rating = request.form['rating']
         status = request.form['status']
         review = request.form['review']
-        date = datetime.now().strftime("%m/%d/%Y")
+        date = datetime.datetime.now().strftime("%m/%d/%Y")
         execute_sql('INSERT INTO review (review, rating, title, date, status, employer_id) VALUES (?, ?, ?, ?, ?, ?)',
                     (review, rating, title, date, status, employer_id),
                     commit=True)
